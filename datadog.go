@@ -50,6 +50,7 @@ func DialSize(addr string, size int) (*Client, error) {
 		buf:  bufio.NewWriterSize(c, size),
 		rand: rand.Float64,
 		conn: c,
+		tags: []string{},
 	}, nil
 }
 
@@ -76,7 +77,7 @@ func (c *Client) SetPrefix(name string) {
 func (c *Client) SetTags(tags ...string) {
 	c.Lock()
 	defer c.Unlock()
-	c.tags = tags
+	c.tags = append(c.tags, tags...)
 }
 
 // Increment incremenets the given stat `name`
