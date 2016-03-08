@@ -75,7 +75,7 @@ func (c *Client) SetPrefix(name string) {
 }
 
 // SetTags sets global tags `tags...`.
-func (c *Client) SetTags(tags ...string) {
+func (c *Client) AddTags(tags ...string) {
 	c.Lock()
 	defer c.Unlock()
 	c.tags = append(c.tags, tags...)
