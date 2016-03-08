@@ -10,6 +10,7 @@ package datadog
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"io"
 	"math/rand"
 	"net"
@@ -128,6 +129,13 @@ func (c *Client) Duration(name string, d time.Duration, tags ...string) error {
 // Unique records a unique occurence of events.
 func (c *Client) Unique(name, value string, tags ...string) error {
 	return c.send(name, value+"|s", 1, tags)
+}
+
+// TimeInMilliseconds sends timing information in milliseconds.
+// It is flushed by statsd with percentiles, mean and other info (https://github.com/etsy/statsd/blob/master/docs/metric_types.md#timing)
+func (c *Client) TimeInMilliseconds(name string, value float64, rate float64, tags ...string) error {
+	stat := fmt.Sprintf("%f|ms", value)
+	return c.send(name, stat, rate, tags)
 }
 
 // Flush will flush the underlying buffer.
